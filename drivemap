@@ -1,0 +1,19 @@
+#!/bin/bash
+ORIGIN="${1}"
+DEST="${2}"
+
+source .env
+
+curl -s -X POST "https://routes.googleapis.com/directions/v2:computeRoutes" \
+  -H "Content-Type: application/json" \
+  -H "X-Goog-Api-Key: ${GMAPS_API_KEY}" \
+  -H "X-Goog-FieldMask: *" \
+  -d "{
+    \"origin\": {\"address\": \"${ORIGIN}\"},
+    \"destination\": {\"address\": \"${DEST}\"},
+    \"travelMode\": \"drive\"
+  }" | python3 -m json.tool > response.json
+
+  python3 readmap.py
+
+
